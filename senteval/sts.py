@@ -61,14 +61,17 @@ class STSEval(object):
         for dataset in self.datasets:
             sys_scores = []
             input1, input2, gs_scores = self.data[dataset]
-            for ii in range(0, len(gs_scores), params.batch_size):
-                batch1 = input1[ii:ii + params.batch_size]
-                batch2 = input2[ii:ii + params.batch_size]
+            enc1 = batcher(params, input1)
+            enc2 = batcher(params, input2)
 
-                # we assume get_batch already throws out the faulty ones
-                if len(batch1) == len(batch2) and len(batch1) > 0:
-                    enc1 = batcher(params, batch1)
-                    enc2 = batcher(params, batch2)
+#            for ii in range(0, len(gs_scores), params.batch_size):
+#                batch1 = input1[ii:ii + params.batch_size]
+#                batch2 = input2[ii:ii + params.batch_size]
+#
+#                # we assume get_batch already throws out the faulty ones
+#                if len(batch1) == len(batch2) and len(batch1) > 0:
+#                    enc1 = batcher(params, batch1)
+#                    enc2 = batcher(params, batch2)
 
                     for kk in range(enc2.shape[0]):
                         sys_score = self.similarity(enc1[kk], enc2[kk])

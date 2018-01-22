@@ -42,10 +42,11 @@ class BinaryClassifierEval(object):
         sorted_samples = [x for (x, y) in sorted_corpus]
         sorted_labels = [y for (x, y) in sorted_corpus]
         logging.info('Generating sentence embeddings')
-        for ii in range(0, self.n_samples, params.batch_size):
-            batch = sorted_samples[ii:ii + params.batch_size]
-            embeddings = batcher(params, batch)
-            enc_input.append(embeddings)
+        enc_input = batcher(params, sorted_samples)
+#        for ii in range(0, self.n_samples, params.batch_size):
+#            batch = sorted_samples[ii:ii + params.batch_size]
+#            embeddings = batcher(params, batch)
+#            enc_input.append(embeddings)
         enc_input = np.vstack(enc_input)
         logging.info('Generated sentence embeddings')
 

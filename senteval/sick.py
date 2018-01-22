@@ -72,12 +72,13 @@ class SICKRelatednessEval(object):
             self.sick_data[key]['y'] = [z for (x, y, z) in sorted_corpus]
 
             for txt_type in ['X_A', 'X_B']:
-                sick_embed[key][txt_type] = []
-                for ii in range(0, len(self.sick_data[key]['y']), bsize):
-                    batch = self.sick_data[key][txt_type][ii:ii + bsize]
-                    embeddings = batcher(params, batch)
-                    sick_embed[key][txt_type].append(embeddings)
-                sick_embed[key][txt_type] = np.vstack(sick_embed[key][txt_type])
+                sick_embed[key][txt_type] = batcher(params, self.sick_data[key][txt_type], key)
+#                sick_embed[key][txt_type] = []
+#                for ii in range(0, len(self.sick_data[key]['y']), bsize):
+#                    batch = self.sick_data[key][txt_type][ii:ii + bsize]
+#                    embeddings = batcher(params, batch)
+#                    sick_embed[key][txt_type].append(embeddings)
+#                sick_embed[key][txt_type] = np.vstack(sick_embed[key][txt_type])
             sick_embed[key]['y'] = np.array(self.sick_data[key]['y'])
             logging.info('Computed {0} embeddings'.format(key))
 
@@ -174,12 +175,13 @@ class SICKEntailmentEval(SICKRelatednessEval):
             self.sick_data[key]['y'] = [z for (x, y, z) in sorted_corpus]
 
             for txt_type in ['X_A', 'X_B']:
-                sick_embed[key][txt_type] = []
-                for ii in range(0, len(self.sick_data[key]['y']), bsize):
-                    batch = self.sick_data[key][txt_type][ii:ii + bsize]
-                    embeddings = batcher(params, batch)
-                    sick_embed[key][txt_type].append(embeddings)
-                sick_embed[key][txt_type] = np.vstack(sick_embed[key][txt_type])
+                sick_embed[key][txt_type] = batcher(params, self.sick_data[key][txt_type], key)
+#                sick_embed[key][txt_type] = []
+#                for ii in range(0, len(self.sick_data[key]['y']), bsize):
+#                    batch = self.sick_data[key][txt_type][ii:ii + bsize]
+#                    embeddings = batcher(params, batch)
+#                    sick_embed[key][txt_type].append(embeddings)
+#                sick_embed[key][txt_type] = np.vstack(sick_embed[key][txt_type])
             logging.info('Computed {0} embeddings'.format(key))
 
         # Train
