@@ -73,9 +73,9 @@ class STSEval(object):
 #                    enc1 = batcher(params, batch1)
 #                    enc2 = batcher(params, batch2)
 
-                    for kk in range(enc2.shape[0]):
-                        sys_score = self.similarity(enc1[kk], enc2[kk])
-                        sys_scores.append(sys_score)
+            for kk in range(enc2.shape[0]):
+                sys_score = self.similarity(enc1[kk], enc2[kk])
+                sys_scores.append(sys_score)
 
             results[dataset] = {'pearson': pearsonr(sys_scores, gs_scores),
                                 'spearman': spearmanr(sys_scores, gs_scores),
