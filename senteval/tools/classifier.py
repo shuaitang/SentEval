@@ -149,7 +149,7 @@ class PyTorchClassifier(object):
         probas = []
         for i in range(0, len(devX), self.batch_size):
             Xbatch = Variable(devX[i:i + self.batch_size], volatile=True)
-            vals = F.softmax(self.model(Xbatch).data.cpu().numpy())
+            vals = F.softmax(self.model(Xbatch).data.cpu().numpy(), dim=1)
             if not probas:
                 probas = vals
             else:
