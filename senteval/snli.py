@@ -79,19 +79,24 @@ class SNLIEval(object):
             input1, input2, mylabels = self.data[key]
             enc_input = []
             n_labels = len(mylabels)
-            for ii in range(0, n_labels, params.batch_size):
-                batch1 = input1[ii:ii + params.batch_size]
-                batch2 = input2[ii:ii + params.batch_size]
-
-                if len(batch1) == len(batch2) and len(batch1) > 0:
-                    enc1 = batcher(params, batch1)
-                    enc2 = batcher(params, batch2)
-                    enc_input.append(np.hstack((enc1, enc2, enc1 * enc2,
-                                                np.abs(enc1 - enc2))))
-                if (ii*params.batch_size) % (20000*params.batch_size) == 0:
-                    logging.info("PROGRESS (encoding): %.2f%%" %
-                                 (100 * ii / n_labels))
-            self.X[key] = np.vstack(enc_input)
+            
+            enc1 = batcher(params, input1)
+            enc2 = batcher(params, input2)
+            en_input = np.hstack((enc1, enc2, enc1 * enc2, np.abs(enc1 - enc2))) 
+#            for ii in range(0, n_labels, params.batch_size):
+#                batch1 = input1[ii:ii + params.batch_size]
+#                batch2 = input2[ii:ii + params.batch_size]
+#
+#                if len(batch1) == len(batch2) and len(batch1) > 0:
+#                    enc1 = batcher(params, batch1)
+#                    enc2 = batcher(params, batch2)
+#                    enc_input.append(np.hstack((enc1, enc2, enc1 * enc2,
+#                                                np.abs(enc1 - enc2))))
+#                if (ii*params.batch_size) % (20000*params.batch_size) == 0:
+#                    logging.info("PROGRESS (encoding): %.2f%%" %
+#                                 (100 * ii / n_labels))
+#            self.X[key] = np.vstack(enc_input)
+            self.X[key] = enc_input
             self.y[key] = [dico_label[y] for y in mylabels]
 
         config = {'nclasses': 3, 'seed': self.seed,
