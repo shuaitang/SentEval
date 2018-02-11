@@ -3,3 +3,4 @@ senteval/__pycache__/
 senteval/tools/__pycache__/
 
 *.pyc
+*.swp

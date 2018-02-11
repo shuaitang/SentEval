@@ -82,7 +82,7 @@ class SNLIEval(object):
             
             enc1 = batcher(params, input1)
             enc2 = batcher(params, input2)
-            en_input = np.hstack((enc1, enc2, enc1 * enc2, np.abs(enc1 - enc2))) 
+            enc_input = np.hstack((enc1, enc2, enc1 * enc2, np.abs(enc1 - enc2))) 
 #            for ii in range(0, n_labels, params.batch_size):
 #                batch1 = input1[ii:ii + params.batch_size]
 #                batch2 = input2[ii:ii + params.batch_size]
