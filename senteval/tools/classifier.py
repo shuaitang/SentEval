@@ -189,10 +189,11 @@ class MLP(PyTorchClassifier):
                 nn.Linear(self.inputdim, self.nclasses),
                 ).cuda()
         else:
+            print('Nonlinear')
             self.model = nn.Sequential(
                 nn.Linear(self.inputdim, params["nhid"]),
-                nn.Dropout(p=self.dropout),
-                nn.Sigmoid(),
+#                nn.Dropout(p=self.dropout),
+#                nn.Sigmoid(,
                 nn.Linear(params["nhid"], self.nclasses),
                 ).cuda()
 

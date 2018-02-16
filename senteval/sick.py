@@ -22,6 +22,69 @@ from senteval.tools.relatedness import RelatednessPytorch
 from senteval.tools.validation import SplitClassifier
 
 
+class SICKEval(object):
+    def __init__(self, task_path, seed=1111):
+        logging.debug('***** Transfer task : SICK-Relatedness*****\n\n')
+        self.seed = seed
+        train = self.loadFile(os.path.join(task_path, 'SICK_train.txt'))
+        dev = self.loadFile(os.path.join(task_path, 'SICK_trial.txt'))
+        test = self.loadFile(os.path.join(task_path, 'SICK_test_annotated.txt'))
+        self.sick_data = {'train': train, 'dev': dev, 'test': test}
+
+    def do_prepare(self, params, prepare):
+        samples = self.sick_data['train']['X_A'] + \
+                  self.sick_data['train']['X_B'] + \
+                  self.sick_data['dev']['X_A'] + \
+                  self.sick_data['dev']['X_B'] + \
+                  self.sick_data['test']['X_A'] + self.sick_data['test']['X_B']
+        
+        if 'similarity' in params:
+            self.similarity = params.similarity
+        else:  # Default similarity is cosine
+            self.similarity = lambda s1, s2: np.nan_to_num(cosine(np.nan_to_num(s1), np.nan_to_num(s2)))
+
+        return prepare(params, samples)
+
+
+    def loadFile(self, fpath):
+        skipFirstLine = True
+        sick_data = {'X_A': [], 'X_B': [], 'y': []}
+        with io.open(fpath, 'r', encoding='utf-8') as f:
+            for line in f:
+                if skipFirstLine:
+                    skipFirstLine = False
+                else:
+                    text = line.strip().split('\t')
+                    sick_data['X_A'].append(text[1].split())
+                    sick_data['X_B'].append(text[2].split())
+                    sick_data['y'].append(text[3])
+
+        sick_data['y'] = [float(s) for s in sick_data['y']]
+        return sick_data
+
+
+    def run(self, params, batcher):
+        
+        sys_scores = []
+        input1, input2, gs_scores = self.sick_data['test']
+        enc1 = batcher(params, input1)
+        enc2 = batcher(params, input2)
+
+        for kk in range(enc2.shape[0]):
+            sys_score = self.similarity(enc1[kk], enc2[kk])
+            sys_scores.append(sys_score)
+
+        results = {'pearson': pearsonr(sys_scores, gs_scores),
+                   'spearman': spearmanr(sys_scores, gs_scores),
+                   'nsamples': len(sys_scores)}
+
+        logging.debug('%s : pearson = %.4f, spearman = %.4f' %
+                      ('SICK', results['pearson'][0],
+                       results['spearman'][0]))
+        
+        return results
+
+
 class SICKRelatednessEval(object):
     def __init__(self, task_path, seed=1111):
         logging.debug('***** Transfer task : SICK-Relatedness*****\n\n')
