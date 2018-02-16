@@ -16,7 +16,7 @@ from senteval import utils
 from senteval.binary import CREval, MREval, MPQAEval, SUBJEval
 from senteval.snli import SNLIEval
 from senteval.trec import TRECEval
-from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
+from senteval.sick import SICKRelatednessEval, SICKEntailmentEval, SICKEval
 from senteval.mrpc import MRPCEval
 from senteval.sts import STS12Eval, STS13Eval, STS14Eval, STS15Eval, STS16Eval, STSBenchmarkEval
 from senteval.sst import SSTEval
@@ -47,7 +47,7 @@ class SE(object):
 
         self.list_tasks = ['CR', 'MR', 'MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
                            'SICKRelatedness', 'SICKEntailment', 'STSBenchmark',
-                           'SNLI', 'ImageCaptionRetrieval', 'STS12', 'STS13',
+                           'SNLI', 'ImageCaptionRetrieval', 'SICK', 'STS12', 'STS13',
                            'STS14', 'STS15', 'STS16']
 
     def eval(self, name):
@@ -80,6 +80,8 @@ class SE(object):
             self.evaluation = STSBenchmarkEval(tpath + '/STS/STSBenchmark', seed=self.params.seed)
         elif name == 'SICKEntailment':
             self.evaluation = SICKEntailmentEval(tpath + '/SICK', seed=self.params.seed)
+        elif name == 'SICK':
+            self.evaluation = SICKEval(tpah + '/SICK', seed=self.params.seed)
         elif name == 'SNLI':
             self.evaluation = SNLIEval(tpath + '/SNLI', seed=self.params.seed)
         elif name in ['STS12', 'STS13', 'STS14', 'STS15', 'STS16']:
