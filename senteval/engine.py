@@ -81,7 +81,7 @@ class SE(object):
         elif name == 'SICKEntailment':
             self.evaluation = SICKEntailmentEval(tpath + '/SICK', seed=self.params.seed)
         elif name == 'SICK':
-            self.evaluation = SICKEval(tpah + '/SICK', seed=self.params.seed)
+            self.evaluation = SICKEval(tpath + '/SICK', seed=self.params.seed)
         elif name == 'SNLI':
             self.evaluation = SNLIEval(tpath + '/SNLI', seed=self.params.seed)
         elif name in ['STS12', 'STS13', 'STS14', 'STS15', 'STS16']:

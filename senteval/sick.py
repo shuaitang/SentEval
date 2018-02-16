@@ -17,7 +17,7 @@ import numpy as np
 
 from sklearn.metrics import mean_squared_error
 from scipy.stats import pearsonr, spearmanr
-
+from senteval.utils import cosine
 from senteval.tools.relatedness import RelatednessPytorch
 from senteval.tools.validation import SplitClassifier
 
@@ -66,14 +66,14 @@ class SICKEval(object):
     def run(self, params, batcher):
         
         sys_scores = []
-        input1, input2, gs_scores = self.sick_data['test']
+        input1, input2, gs_scores = self.sick_data['test']['X_A'], self.sick_data['test']['X_B'], self.sick_data['test']['y']
         enc1 = batcher(params, input1)
         enc2 = batcher(params, input2)
-
+        print(len(gs_scores))
         for kk in range(enc2.shape[0]):
             sys_score = self.similarity(enc1[kk], enc2[kk])
             sys_scores.append(sys_score)
-
+        print(len(sys_scores))
         results = {'pearson': pearsonr(sys_scores, gs_scores),
                    'spearman': spearmanr(sys_scores, gs_scores),
                    'nsamples': len(sys_scores)}
