@@ -119,9 +119,9 @@ class STS12Eval(STSEval):
 class STS13Eval(STSEval):
     # STS13 here does not contain the "SMT" subtask due to LICENSE issue
     def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : STS13 (-SMT) *****\n\n')
+        logging.debug('***** Transfer task : STS13 *****\n\n')
         self.seed = seed
-        self.datasets = ['FNWN', 'headlines', 'OnWN']
+        self.datasets = ['FNWN', 'headlines', 'OnWN', 'SMT']
         self.loadFile(taskpath)
 
 
