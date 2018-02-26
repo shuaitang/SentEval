@@ -48,7 +48,7 @@ class STSEval(object):
 
             self.data[dataset] = (sent1, sent2, gs_scores)
             self.samples += sent1 + sent2
-
+ 
     def do_prepare(self, params, prepare):
         if 'similarity' in params:
             self.similarity = params.similarity

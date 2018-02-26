@@ -192,6 +192,13 @@ class MLP(PyTorchClassifier):
             print('Nonlinear')
             self.model = nn.Sequential(
                 nn.Linear(self.inputdim, params["nhid"]),
+                nn.BatchNorm1d(params["nhid"]),
+                nn.PReLU(params["nhid"]),
+                nn.Dropout(p=0.5),
+                nn.Linear(params["nhid"], params["nhid"]),
+                nn.BatchNorm1d(params["nhid"]),
+                nn.PReLU(params["nhid"]),
+                nn.Dropout(p=0.5),
 #                nn.Dropout(p=self.dropout),
 #                nn.Sigmoid(,
                 nn.Linear(params["nhid"], self.nclasses),

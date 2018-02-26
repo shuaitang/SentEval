@@ -261,7 +261,7 @@ class SICKEntailmentEval(SICKRelatednessEval):
         trainB = sick_embed['train']['X_B']
 #        trainF = np.c_[trainA, trainB, np.abs(trainA - trainB), trainA * trainB]
         trainF = np.c_[np.abs(trainA - trainB), trainA * trainB]
-#        trainF = np.c_[np.abs(trainA - trainB), np.abs(trainA - trainB)]
+#        trainF = np.c_[trainA * trainB]
 #        trainF = np.c_[trainA * trainB, trainA * trainB]
         trainY = np.array(self.sick_data['train']['y'])
 
@@ -269,8 +269,8 @@ class SICKEntailmentEval(SICKRelatednessEval):
         devA = sick_embed['dev']['X_A']
         devB = sick_embed['dev']['X_B']
 #        devF = np.c_[devA, devB, np.abs(devA - devB), devA * devB]
-        devF = np.c_[np.abs(devA - devB), devA * devB]
-#        devF = np.c_[np.abs(devA - devB), np.abs(devA - devB)]
+        devF = np.c_[np.abs(devA - devB), devA * devB]        
+#        devF = np.c_[devA * devB]
 #        devF = np.c_[devA * devB, devA * devB]
         devY = np.array(self.sick_data['dev']['y'])
 
@@ -279,7 +279,7 @@ class SICKEntailmentEval(SICKRelatednessEval):
         testB = sick_embed['test']['X_B']
 #        testF = np.c_[testA, testB, np.abs(testA - testB), testA * testB]
         testF = np.c_[np.abs(testA - testB), testA * testB]
-#        testF = np.c_[np.abs(testA - testB), np.abs(testA - testB)]
+#        testF = np.c_[testB * testA]
 #        testF = np.c_[testA * testB, testA * testB]
         testY = np.array(self.sick_data['test']['y'])
 

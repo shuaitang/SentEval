@@ -68,6 +68,7 @@ class TRECEval(object):
 
         # Get test embeddings
         test_embeddings = batcher(params, test_samples, 'test')
+
 #        for ii in range(0, len(test_labels), params.batch_size):
 #            batch = test_samples[ii:ii + params.batch_size]
 #            embeddings = batcher(params, batch)

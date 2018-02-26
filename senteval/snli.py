@@ -82,7 +82,9 @@ class SNLIEval(object):
             
             enc1 = batcher(params, input1)
             enc2 = batcher(params, input2)
-            enc_input = np.hstack((enc1, enc2, enc1 * enc2, np.abs(enc1 - enc2))) 
+            print(enc2.shape)
+            enc_input = np.hstack((enc1, enc2, np.abs(enc1 - enc2)))
+#            enc_input = np.hstack((enc1, enc2, enc1 * enc2, np.abs(enc1 - enc2))) 
 #            for ii in range(0, n_labels, params.batch_size):
 #                batch1 = input1[ii:ii + params.batch_size]
 #                batch2 = input2[ii:ii + params.batch_size]
@@ -102,13 +104,14 @@ class SNLIEval(object):
         config = {'nclasses': 3, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
                   'cudaEfficient': True,
-                  'nhid': params.nhid, 'noreg': True}
+                  'nhid': 1000, 'noreg': True}
 
         config_classifier = copy.deepcopy(params.classifier)
         config_classifier['max_epoch'] = 15
         config_classifier['epoch_size'] = 1
+        config_classifier['nhid'] = 1000
         config['classifier'] = config_classifier
-
+        config['nhid'] = 1000
         clf = SplitClassifier(self.X, self.y, config)
         devacc, testacc = clf.run()
         logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
