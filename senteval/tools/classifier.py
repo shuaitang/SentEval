@@ -97,8 +97,8 @@ class PyTorchClassifier(object):
                 idx = torch.LongTensor(permutation[i:i + self.batch_size])
                 if isinstance(X, torch.cuda.FloatTensor):
                     idx = idx.cuda()
-                Xbatch = Variable(X.index_select(0, idx))
-                ybatch = Variable(y.index_select(0, idx))
+                Xbatch = X.index_select(0, idx)
+                ybatch = y.index_select(0, idx)
                 if self.cudaEfficient:
                     Xbatch = Xbatch.cuda()
                     ybatch = ybatch.cuda()
@@ -121,8 +121,8 @@ class PyTorchClassifier(object):
             devX = torch.FloatTensor(devX).cuda()
             devy = torch.LongTensor(devy).cuda()
         for i in range(0, len(devX), self.batch_size):
-            Xbatch = Variable(devX[i:i + self.batch_size], volatile=True)
-            ybatch = Variable(devy[i:i + self.batch_size], volatile=True)
+            Xbatch = devX[i:i + self.batch_size]
+            ybatch = devy[i:i + self.batch_size]
             if self.cudaEfficient:
                 Xbatch = Xbatch.cuda()
                 ybatch = ybatch.cuda()
@@ -138,7 +138,7 @@ class PyTorchClassifier(object):
             devX = torch.FloatTensor(devX).cuda()
         yhat = np.array([])
         for i in range(0, len(devX), self.batch_size):
-            Xbatch = Variable(devX[i:i + self.batch_size], volatile=True)
+            Xbatch = devX[i:i + self.batch_size]
             output = self.model(Xbatch)
             yhat = np.append(yhat,
                              output.data.max(1)[1].cpu().numpy())
@@ -149,7 +149,7 @@ class PyTorchClassifier(object):
         self.model.eval()
         probas = []
         for i in range(0, len(devX), self.batch_size):
-            Xbatch = Variable(devX[i:i + self.batch_size], volatile=True)
+            Xbatch = devX[i:i + self.batch_size]
             vals = F.softmax(self.model(Xbatch).data.cpu().numpy())
             if not probas:
                 probas = vals
