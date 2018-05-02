@@ -108,8 +108,8 @@ class RelatednessPytorch(object):
             for i in range(0, len(X), self.batch_size):
                 # forward
                 idx = torch.from_numpy(permutation[i:i + self.batch_size]).long().cuda()
-                Xbatch = Variable(X.index_select(0, idx))
-                ybatch = Variable(y.index_select(0, idx))
+                Xbatch = X.index_select(0, idx)
+                ybatch = y.index_select(0, idx)
                 output = self.model(Xbatch)
                 # loss
                 loss = self.loss_fn(output, ybatch)
@@ -125,7 +125,7 @@ class RelatednessPytorch(object):
         self.model.eval()
         probas = []
         for i in range(0, len(devX), self.batch_size):
-            Xbatch = Variable(devX[i:i + self.batch_size], volatile=True)
+            Xbatch = devX[i:i + self.batch_size]
             if len(probas) == 0:
                 probas = self.model(Xbatch).data.cpu().numpy()
             else:
